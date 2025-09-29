@@ -1,0 +1,5 @@
+services:
+  custom_article_tools.event_subscriber:
+    class: Drupal\custom_article_tools\EventSubscriber\CustomArticleToolsSubscriber
+    tags:
+      - { name: event_subscriber }

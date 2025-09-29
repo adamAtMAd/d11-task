@@ -1,0 +1,10 @@
+name: 'Custom article tools'
+type: module
+description: 'Custom tools for content type article'
+package: '@todo Add package'
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:rest
+  - drupal:views
+  - hook_event_dispatcher:hook_event_dispatcher
+  - hook_event_dispatcher:core_event_dispatcher

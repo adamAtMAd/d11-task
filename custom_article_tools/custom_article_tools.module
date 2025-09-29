@@ -1,0 +1,48 @@
+<?php
+
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItemInterface;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implementing hook_form_alter.
+ */
+function custom_article_tools_form_alter(&$form, FormStateInterface $form_state, $form_id) : void {
+  if ($form_id !== 'node_article_edit_form' && $form_id !== 'node_article_form') {
+    return;
+  }
+
+  $form['custom_promote'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Promote to newsletter'),
+    '#default_value' => $form['field_promote_newsletter']['widget']['value']['#default_value'],
+  ];
+
+  array_unshift($form['actions']['submit']['#submit'], 'custom_promote_submit');
+}
+
+/**
+ * Set field field_promote_newsletter with custom value provided by a custom_promote field.
+ *
+ * @param $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ * @return void
+ */
+function custom_promote_submit($form, FormStateInterface $form_state) : void {
+  if (isset($form['custom_promote']) && isset($form['field_promote_newsletter'])) {
+    $form_state->setValue(['field_promote_newsletter', 'value'], $form_state->getValue('custom_promote'));
+  }
+}
+
+/**
+ * Implementing hook_views_query_alter.
+ */
+function custom_article_tools_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() !== 'articles_list') {
+    return;
+  }
+
+  $query->addWhere(0, 'created', time(), '<=');
+}

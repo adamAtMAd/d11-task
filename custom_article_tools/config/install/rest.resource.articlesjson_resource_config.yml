@@ -1,0 +1,9 @@
+id: articlesjson_resource_config
+plugin_id: custom_article_tools_articlesjson
+granularity: method
+configuration:
+  GET:
+    supported_formats:
+      - json
+    supported_auth:
+      - cookie
